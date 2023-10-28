@@ -1,0 +1,182 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 iAWriterDuospace-Regular;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww14400\viewh18000\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ab anrede Sehr geehrte Damen und Herren\
+ab anf Sehr geehrte Frau\
+ab anh Sehr geehrter Herr\
+ab anm Sehr geehrtes Mitglied\
+ab mfg Mit freundlichen Gr\'fc\'dfen und Weidmannsheil\
+ab aufg - [ ]\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+set laststatus=2\
+set omnifunc=htmlcomplete#CompleteTags\
+set omnifunc=csscomplete#CompleteCSS\
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS\
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags\
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS\
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete\
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags\
+filetype on\
+\
+\
+\
+let g:lightline = \{\
+      \\ 'colorscheme': 'wombat',\
+      \\ 'active': \{\
+      \\   'left': [ [ 'mode', 'paste' ],\
+      \\             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]\
+      \\ \},\
+      \\ 'component_function': \{\
+      \\   'gitbranch': 'FugitiveHead'\
+      \\ \},\
+      \\ \}\
+let g:completor_css_omni_trigger = '([\\w-]+|@[\\w-]*|[\\w-]+:\\s*[\\w-]*)$'\
+\
+\
+syntax on\
+filetype indent on\
+set complete+=s\
+set number\
+set cursorline\
+set showmode\
+set showcmd\
+set incsearch\
+set ignorecase\
+set cmdheight=2\
+set cc=80\
+set linebreak\
+\
+set hlsearch\
+\
+set path+=**\
+set wildmenu\
+\
+set guifont=Source\\ Code\\ Pro\\ for\\ Powerline\
+\
+\
+\
+\
+\
+\
+set title\
+\
+set statusline+=\\ %F\\ %M\\ %Y\\ %R\
+set statusline+=%=\
+set statusline+=\\ ascii:\\ %b\\ hex:\\ 0x%B\\ row:\\ %l\\ col:\\ %c\\ percent:\\ %p%%\
+set spell\
+set spelllang=de_de\
+\
+set guifont=Inconsolata\\ for\\ Powerline:h15\
+let g:Powerline_symbols = 'fancy'\
+set encoding=utf-8\
+set t_Co=256\
+set fillchars+=stl:\\ ,stlnc:\\\
+set term=xterm-256color\
+set termencoding=utf-8\
+set fillchars+=stl:\\ ,stlnc:\\\
+function! GitBranch()\
+  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\\n'")\
+endfunction\
+\
+function! StatuslineGit()\
+  let l:branchname = GitBranch()\
+  return strlen(l:branchname) > 0?'  '.l:branchname.' ':''\
+endfunction\
+\
+set statusline=\
+set statusline+=%#PmenuSel#\
+set statusline+=%\{StatuslineGit()\}\
+set statusline+=%#LineNr#\
+set statusline+=\\ %f\
+set statusline+=%m\\\
+set statusline+=%=\
+set statusline+=%#CursorColumn#\
+set statusline+=\\ %y\
+set statusline+=\\ %\{&fileencoding?&fileencoding:&encoding\}\
+set statusline+=\\[%\{&fileformat\}\\]\
+set statusline+=\\ %p%%\
+set statusline+=\\ %l:%c\
+set statusline+=\\\
+\
+\
+\
+\
+call plug#begin()\
+" The default plugin directory will be as follows:\
+"   - Vim (Linux/macOS): '~/.vim/plugged'\
+"   - Vim (Windows): '~/vimfiles/plugged'\
+"   - Neovim (Linux/macOS/Windows): stdpath('data') . '/plugged'\
+" You can specify a custom plugin directory by passing it as the argument\
+"   - e.g. `call plug#begin('~/.vim/plugged')`\
+"   - Avoid using standard Vim directory names like 'plugin'\
+\
+" Make sure you use single quotes\
+\
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align\
+Plug 'junegunn/vim-easy-align'\
+\
+" Any valid git URL is allowed\
+Plug 'https://github.com/junegunn/vim-github-dashboard.git'\
+\
+" Multiple Plug commands can be written in a single line using | separators\
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'\
+\
+" On-demand loading\
+Plug 'preservim/nerdtree', \{ 'on': 'NERDTreeToggle' \}\
+Plug 'tpope/vim-fireplace', \{ 'for': 'clojure' \}\
+\
+" Using a non-default branch\
+Plug 'rdnetto/YCM-Generator', \{ 'branch': 'stable' \}\
+\
+" Using a tagged release; wildcard allowed (requires git 1.9.2 or above)\
+Plug 'fatih/vim-go', \{ 'tag': '*' \}\
+\
+" Plugin options\
+Plug 'nsf/gocode', \{ 'tag': 'v.20150303', 'rtp': 'vim' \}\
+\
+" Plugin outside ~/.vim/plugged with post-update hook\
+Plug 'junegunn/fzf', \{ 'dir': '~/.fzf', 'do': './install --all' \}\
+\
+" Unmanaged plugin (manually installed and updated)\
+Plug '~/my-prototype-plugin'\
+Plug 'itchyny/lightline.vim'\
+Plug 'turbio/bracey.vim'\
+Plug 'mattn/emmet-vim'\
+Plug 'maralla/completor.vim'\
+Plug 'maralla/completor-typescript'\
+Plug 'makerj/vim-pdf'\
+Plug 'dense-analysis/ale'\
+Plug 'dsawardekar/wordpress.vim'\
+Plug 'mrpeterlee/VimWordpress'\
+let g:user_emmet_leader_key=','\
+let g:user_emmet_mode='n'   "only enable normal mode functions.\
+let g:user_emmet_mode='inv'  "enable all functions, which is equal to\
+let g:user_emmet_mode='a'    "enable all function in all mode.\
+let g:user_emmet_install_global = 1\
+autocmd FileType html,css EmmetInstall\
+\
+\
+\
+\
+\
+\
+\
+" Initialize plugin system\
+" - Automatically executes `filetype plugin indent on` and `syntax enable`.\
+call plug#end()\
+" You can revert the settings after the call like so:\
+"   filetype indent off   " Disable file-type-specific indentatio\
+"   syntax off            " Disable syntax highlighting}
