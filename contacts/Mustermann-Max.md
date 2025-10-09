@@ -1,3 +1,3 @@
-Max Mustermann
-1. Vorsitzender
-max.mustermann@verein.de
+Madlen Schuchardt
+Erste Vorsitzende
+kjs.vorstand@gmail.com
