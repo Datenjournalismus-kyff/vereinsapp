@@ -18,9 +18,9 @@ var DATA_STORE = {
   ],
   "contacts": [
     {
-      "id": "Schuchardt_Madlen.md",
-      "name": "Madlen Schuchardt",
-      "role": "Erste Vorsitzende",
+      "id": "Schuchardt-Madlen.md",
+      "name": "Madlen Schuchardt<br>",
+      "role": "Erste Vorsitzende<br>",
       "contact": "kjs.vorstand@gmail.com"
     },
     {
