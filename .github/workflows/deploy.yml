@@ -1,0 +1,39 @@
+name: Deploy Vereins-App
+
+on:
+  push:
+    branches:
+      - main  # Führt den Workflow bei jedem Push auf den 'main'-Branch aus
+  workflow_dispatch: # Ermöglicht manuelle Ausführung über die GitHub UI
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # WICHTIG: Erlaubt dem 'gh-pages' Action, den Branch zu erstellen und Dateien zu pushen.
+    
+    steps:
+      - name: 0. Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 1. Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Verwendet eine aktuelle Node.js-Version
+
+      - name: 2. Installiere Dependencies (falls vorhanden)
+        # Aktuell ist nur fs und path nötig, aber es ist guter Stil, diesen Schritt zu behalten.
+        run: echo "Keine zusätzlichen npm-Dependencies erforderlich."
+
+      - name: 3. Daten generieren (data.js erzeugen)
+        # Führt Ihr JavaScript-Skript aus, um data.js aus den Markdown-Dateien zu erstellen
+        run: node generate_data.js
+      
+      - name: 4. Deployment auf GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ # Veröffentlicht den gesamten Root-Ordner (vereinsapp)
+          # Wenn Ihre App unter einem Unterpfad veröffentlicht wird, müssen Sie hier den Pfad anpassen.
+          # Da dies eine einfache statische Seite ist, verwenden wir das Root-Verzeichnis.
+          cname: # Lassen Sie dieses Feld leer, wenn Sie keine eigene Domain verwenden
