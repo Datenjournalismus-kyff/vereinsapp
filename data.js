@@ -15,6 +15,13 @@ var DATA_STORE = {
   ],
   "appointments": [
     {
+      "id": "20251218-1830-Mitgliederversammlung.md",
+      "date": "18.12.2025",
+      "time": "18:30 Uhr",
+      "title": "Mitgliederversammlung",
+      "location": "Gaststätte Waldblick"
+    },
+    {
       "id": "20251101-1900-Jägerball.md",
       "date": "01.11.2025",
       "time": "19:00 Uhr",
