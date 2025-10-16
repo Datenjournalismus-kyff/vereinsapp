@@ -10,13 +10,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         :root {
-            --primary-color: #3b82f6; /* Tailwind blue-500 */
+            --primary-color: #0d9488; /* Teal-600 */
+            --primary-hover: #0f766e; /* Teal-700 */
+            --background-color: #f0fdfa; /* Teal-50 */
+            --card-background: #ffffff;
+            --text-color: #111827; /* Gray-900 */
+            --subtle-text: #6b7280; /* Gray-500 */
+            --border-color: #ccfbf1; /* Teal-100 */
         }
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .tab-button {
+            position: relative;
+            transition: color 0.3s ease;
+        }
         .tab-button.active {
-            border-bottom: 3px solid var(--primary-color);
             color: var(--primary-color);
             font-weight: 600;
+        }
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
         }
     </style>
     <!--
@@ -26,46 +49,48 @@
     <script src="./data.js"></script>
 </head>
 <body class="antialiased min-h-screen">
-<div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+<div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
     <!-- Header -->
-    <header class="text-center py-6 mb-8 border-b border-gray-200">
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-2">
-            <i class="fas fa-bullhorn text-blue-500 mr-2"></i> Vereins-Info-Zentrale
+    <header class="text-center py-8 mb-10">
+        <div class="inline-block bg-teal-100 text-teal-600 p-4 rounded-full mb-4">
+            <i class="fas fa-users text-4xl"></i>
+        </div>
+        <h1 class="text-5xl font-extrabold text-gray-800">
+            Vereins-Info-Zentrale
         </h1>
-        <p class="text-gray-500">Neuigkeiten, Termine & Ansprechpartner</p>
+        <p class="text-lg text-gray-600 mt-2">Alle Neuigkeiten, Termine & Ansprechpartner auf einen Blick.</p>
     </header>
 
     <!-- Tab Navigation -->
-    <div class="flex justify-center mb-6 space-x-4 border-b border-gray-300">
-        <button id="tab-news" data-tab="news" class="tab-button active p-3 text-lg text-gray-600 hover:text-blue-500 transition duration-150 ease-in-out">
-            <i class="fas fa-newspaper mr-2"></i> Neuigkeiten
-        </button>
-        <button id="tab-appointments" data-tab="appointments" class="tab-button p-3 text-lg text-gray-600 hover:text-blue-500 transition duration-150 ease-in-out">
-            <i class="fas fa-calendar-alt mr-2"></i> Termine
-        </button>
-        <button id="tab-contacts" data-tab="contacts" class="tab-button p-3 text-lg text-gray-600 hover:text-blue-500 transition duration-150 ease-in-out">
-            <i class="fas fa-headset mr-2"></i> Kontakte
-        </button>
+    <div class="flex justify-center mb-8 border-b border-gray-200">
+        <div class="flex space-x-8">
+            <button id="tab-news" data-tab="news" class="tab-button active pb-3 text-lg text-gray-500 hover:text-teal-600">
+                <i class="fas fa-newspaper mr-2"></i> Neuigkeiten
+            </button>
+            <button id="tab-appointments" data-tab="appointments" class="tab-button pb-3 text-lg text-gray-500 hover:text-teal-600">
+                <i class="fas fa-calendar-check mr-2"></i> Termine
+            </button>
+            <button id="tab-contacts" data-tab="contacts" class="tab-button pb-3 text-lg text-gray-500 hover:text-teal-600">
+                <i class="fas fa-users-cog mr-2"></i> Kontakte
+            </button>
+        </div>
     </div>
 
     <!-- Tab Content Containers -->
     <div id="content-news" class="tab-content">
-        <h2 class="text-2xl font-bold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Aktuelle Neuigkeiten</h2>
-        <div id="news-list" class="space-y-6">
+        <div id="news-list" class="space-y-8">
             <!-- Neuigkeiten werden hier gerendert -->
         </div>
     </div>
 
     <div id="content-appointments" class="tab-content hidden">
-        <h2 class="text-2xl font-bold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Kommende Termine</h2>
-        <div id="appointments-list" class="space-y-4">
+        <div id="appointments-list" class="space-y-5">
             <!-- Termine werden hier gerendert -->
         </div>
     </div>
 
     <div id="content-contacts" class="tab-content hidden">
-        <h2 class="text-2xl font-bold mb-4 text-gray-700 border-l-4 border-blue-500 pl-3">Ansprechpartner</h2>
-        <div id="contacts-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div id="contacts-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Kontakte werden hier gerendert -->
         </div>
     </div>
