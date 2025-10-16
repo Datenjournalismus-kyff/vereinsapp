@@ -4,7 +4,7 @@ var DATA_STORE = {
       "id": "20251007-webstorm-automatisierung.md",
       "date": "07.10.2025",
       "title": "Webstorm Automatisierung",
-      "contentHtml": "<p>Die Daten-Generierung funktioniert jetzt vollautomatisch!</p><p>Änderungen in diesem Text werden nach jedem Commit auf GitHub automatisch in die App übernommen.</p>"
+      "contentHtml": "<p>Die Daten-Generierung funktioniert jetzt vollautomatisch!</p>\n<p>Änderungen in diesem Text werden nach jedem Commit auf GitHub automatisch in die App übernommen.</p>\n"
     }
   ],
   "appointments": [
@@ -18,10 +18,10 @@ var DATA_STORE = {
   ],
   "contacts": [
     {
-      "id": "Mustermann-Max.md",
-      "name": "Max Mustermann",
-      "role": "1. Vorsitzender",
-      "contact": "max.mustermann@verein.de"
+      "id": "Schuchardt-Madlen.md",
+      "name": "Madlen Schuchardt<br>",
+      "role": "Erste Vorsitzende<br>",
+      "contact": "kjs.vorstand@gmail.com"
     },
     {
       "id": "Hense-Michel.md",
