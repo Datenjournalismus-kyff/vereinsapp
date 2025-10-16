@@ -21,9 +21,8 @@ jobs:
         with:
           node-version: '20' # Verwendet eine aktuelle Node.js-Version
 
-      - name: 2. Installiere Dependencies (falls vorhanden)
-        # Aktuell ist nur fs und path nötig, aber es ist guter Stil, diesen Schritt zu behalten.
-        run: echo "Keine zusätzlichen npm-Dependencies erforderlich."
+      - name: 2. Installiere Dependencies
+        run: npm install
 
       - name: 3. Daten generieren (data.js erzeugen)
         # Führt Ihr JavaScript-Skript aus, um data.js aus den Markdown-Dateien zu erstellen
