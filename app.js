@@ -17,62 +17,69 @@ let currentTab = 'news'; // Startet mit Neuigkeiten
 
 function renderNews() {
     if (appData.news.length === 0) {
-        newsList.innerHTML = '<p class="text-gray-500 p-4 border rounded-lg bg-white">Keine aktuellen Neuigkeiten vorhanden.</p>';
+        newsList.innerHTML = '<div class="bg-white text-center p-8 rounded-lg shadow-md"><p class="text-gray-500">Keine aktuellen Neuigkeiten vorhanden.</p></div>';
         return;
     }
 
     newsList.innerHTML = appData.news.map(item => `
-            <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl">
-                <div class="flex items-center mb-3">
-                    <span class="text-sm font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full mr-3">${item.date}</span>
-                    <h3 class="text-xl font-bold text-gray-800">${item.title}</h3>
+        <article class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+            <div class="flex items-start">
+                <div class="flex-shrink-0 text-center mr-5">
+                    <div class="bg-teal-100 text-teal-600 font-bold text-lg w-16 h-16 rounded-lg flex flex-col justify-center items-center">
+                        <span>${item.date.split('.')[0]}</span>
+                        <span class="text-xs uppercase tracking-wider">${new Date(item.date.split('.')[2], item.date.split('.')[1] - 1, item.date.split('.')[0]).toLocaleString('de-DE', { month: 'short' })}</span>
+                    </div>
                 </div>
-                <div class="text-gray-700 leading-relaxed">${item.contentHtml}</div>
+                <div class="flex-grow">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">${item.title}</h3>
+                    <div class="text-gray-600 leading-relaxed prose">${item.contentHtml}</div>
+                </div>
             </div>
-        `).join('');
+        </article>
+    `).join('');
 }
 
 function renderAppointments() {
     if (appData.appointments.length === 0) {
-        appointmentsList.innerHTML = '<p class="text-gray-500 p-4 border rounded-lg bg-white">Aktuell sind keine Termine geplant.</p>';
+        appointmentsList.innerHTML = '<div class="bg-white text-center p-8 rounded-lg shadow-md"><p class="text-gray-500">Aktuell sind keine Termine geplant.</p></div>';
         return;
     }
 
     appointmentsList.innerHTML = appData.appointments.map(item => `
-            <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-green-500 flex items-start space-x-4">
-                <div class="flex-shrink-0 text-center pt-1">
-                    <i class="fas fa-clock text-xl text-green-600"></i>
-                    <div class="text-xs text-gray-500">${item.time}</div>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold text-gray-800">${item.title}</h4>
-                    <p class="text-gray-600">${item.location}</p>
-                    <p class="text-sm text-gray-500 mt-1">am ${item.date}</p>
-                </div>
+        <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 border-teal-500 flex items-center space-x-5 hover:shadow-md transition-shadow duration-300">
+            <div class="flex-shrink-0 text-teal-500">
+                <i class="fas fa-calendar-check text-3xl"></i>
             </div>
-        `).join('');
+            <div class="flex-grow">
+                <h4 class="text-xl font-semibold text-gray-800">${item.title}</h4>
+                <p class="text-gray-600">${item.location}</p>
+            </div>
+            <div class="text-right text-gray-500">
+                <div class="font-semibold">${item.date}</div>
+                <div class="text-sm">${item.time}</div>
+            </div>
+        </div>
+    `).join('');
 }
 
 function renderContacts() {
     if (appData.contacts.length === 0) {
-        contactsList.innerHTML = '<div class="col-span-1 md:col-span-2"><p class="text-gray-500 p-4 border rounded-lg bg-white">Keine Kontakte hinterlegt.</p></div>';
+        contactsList.innerHTML = '<div class="col-span-full bg-white text-center p-8 rounded-lg shadow-md"><p class="text-gray-500">Keine Kontakte hinterlegt.</p></div>';
         return;
     }
 
     contactsList.innerHTML = appData.contacts.map(item => `
-            <div class="bg-white p-5 rounded-xl shadow-md border border-gray-100">
-                <div class="flex items-center mb-3">
-                    <i class="fas fa-user-circle text-4xl text-gray-400 mr-4"></i>
-                    <div>
-                        <h4 class="text-xl font-bold text-gray-800">${item.name}</h4>
-                        <p class="text-sm font-semibold text-blue-600">${item.role}</p>
-                    </div>
-                </div>
-                <a href="mailto:${item.contact}" class="text-blue-500 hover:text-blue-700 transition duration-150 ease-in-out flex items-center">
-                    <i class="fas fa-envelope mr-2 text-sm"></i> ${item.contact}
-                </a>
+        <div class="bg-white p-6 rounded-lg shadow-sm text-center hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1">
+            <div class="mb-4">
+                <i class="fas fa-user-circle text-6xl text-gray-300"></i>
             </div>
-        `).join('');
+            <h4 class="text-xl font-bold text-gray-800">${item.name}</h4>
+            <p class="text-teal-600 font-semibold mb-3">${item.role}</p>
+            <a href="mailto:${item.contact}" class="inline-block bg-gray-100 text-gray-600 px-4 py-2 rounded-full text-sm hover:bg-teal-100 hover:text-teal-700 transition-colors duration-300">
+                <i class="fas fa-envelope-open-text mr-2"></i> Kontaktieren
+            </a>
+        </div>
+    `).join('');
 }
 
 // --- Tab Management (Funktioniert bereits) ---
