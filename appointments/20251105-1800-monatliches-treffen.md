@@ -1,1 +1,0 @@
-Gemeinschaftsraum B, Hauptgebäude, 3. Stock

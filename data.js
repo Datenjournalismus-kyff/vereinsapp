@@ -9,11 +9,11 @@ var DATA_STORE = {
   ],
   "appointments": [
     {
-      "id": "20251105-1800-monatliches-treffen.md",
-      "date": "05.11.2025",
-      "time": "18:00 Uhr",
-      "title": "Monatliches Treffen",
-      "location": "Gemeinschaftsraum B, Hauptgebäude, 3. Stock"
+      "id": "2021101-1900-Jaegerball.md",
+      "date": "1.10.2021",
+      "time": "19:00 Uhr",
+      "title": "Jaegerball",
+      "location": "Jägerball"
     }
   ],
   "contacts": [
