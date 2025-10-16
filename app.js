@@ -104,7 +104,49 @@ function showTab(tabName) {
     });
 }
 
-// --- Initialisierung (Funktioniert bereits) ---
+// --- Auto-Update Logik ---
+
+let currentDataString = JSON.stringify(DATA_STORE);
+
+function checkForUpdates() {
+    // Erstelle ein neues Skript-Element, um die neuesten Daten zu laden
+    const script = document.createElement('script');
+    script.src = `./data.js?v=${new Date().getTime()}`; // Cache-Buster
+
+    script.onload = () => {
+        const newDataString = JSON.stringify(DATA_STORE);
+
+        if (newDataString !== currentDataString) {
+            console.log('Änderungen erkannt. Aktualisiere die Ansicht...');
+            currentDataString = newDataString;
+
+            // Die globale DATA_STORE wurde durch das neue Skript aktualisiert.
+            // Weise die Daten neu zu und rendere die App neu.
+            appData.news = DATA_STORE.news || [];
+            appData.appointments = DATA_STORE.appointments || [];
+            appData.contacts = DATA_STORE.contacts || [];
+
+            renderNews();
+            renderAppointments();
+            renderContacts();
+
+            console.log('Ansicht erfolgreich aktualisiert.');
+        }
+
+        // Entferne das Skript-Tag, nachdem es geladen wurde, um das DOM sauber zu halten
+        document.body.removeChild(script);
+    };
+
+    script.onerror = () => {
+        console.error('Fehler beim Laden der neuen Daten.');
+        document.body.removeChild(script);
+    };
+
+    document.body.appendChild(script);
+}
+
+
+// --- Initialisierung ---
 
 function initApp() {
     // Führe alle Render-Funktionen aus
@@ -122,6 +164,10 @@ function initApp() {
 
     // Zeige den initialen Tab
     showTab(currentTab);
+
+    // Starte die automatische Überprüfung auf Updates alle 60 Sekunden
+    setInterval(checkForUpdates, 60000);
+    console.log('Automatische Aktualisierung alle 60 Sekunden gestartet.');
 }
 
 // Starte die App, sobald das DOM geladen ist
