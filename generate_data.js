@@ -138,6 +138,25 @@ function contactsProcessor(file, content) {
 
 
 /**
+ * Fügt einen Cache-Busting-Parameter zu den Skript-Tags in der index.html hinzu.
+ */
+function addCacheBusting() {
+    const version = new Date().getTime();
+    const indexPath = path.join(__dirname, 'index.html');
+    let htmlContent = fs.readFileSync(indexPath, 'utf8');
+
+    // Ersetze die Skript-Pfade, um den Cache-Buster hinzuzufügen
+    htmlContent = htmlContent.replace(
+        /(src="\.\/(data|app)\.js)\??(v=\d+)?"/g,
+        `src="./$2.js?v=${version}"`
+    );
+
+    fs.writeFileSync(indexPath, htmlContent);
+    console.log(`Cache-Busting-Version ${version} zu index.html hinzugefügt.`);
+}
+
+
+/**
  * Liest alle Datenquellen und kombiniert sie in einer einzigen data.js.
  */
 function generateAllData() {
@@ -160,6 +179,9 @@ function generateAllData() {
     fs.writeFileSync(OUTPUT_FILE, jsContent);
     console.log(`Erfolgreich kombinierte Daten in ${OUTPUT_FILE} geschrieben.`);
     console.log(`Daten: ${newsData.length} News, ${appointmentsData.length} Termine, ${contactsData.length} Kontakte.`);
+
+    // Füge den Cache-Buster hinzu, nachdem die Daten generiert wurden
+    addCacheBusting();
 }
 
 generateAllData();
