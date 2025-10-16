@@ -9,7 +9,7 @@ const NEWS_DIR = path.join(__dirname, 'news');
 const APPOINTMENTS_DIR = path.join(__dirname, 'appointments');
 // NEU: Konfiguration für den Kontakte-Ordner
 const CONTACTS_DIR = path.join(__dirname, 'contacts');
-const OUTPUT_FILE = path.join(__dirname, 'data.js');
+const OUTPUT_FILE = path.join(__dirname, 'data.json');
 // Entfernt: CONTACTS_DATA da sie nun dynamisch geladen werden
 
 
@@ -138,29 +138,10 @@ function contactsProcessor(file, content) {
 
 
 /**
- * Fügt einen Cache-Busting-Parameter zu den Skript-Tags in der index.html hinzu.
- */
-function addCacheBusting() {
-    const version = new Date().getTime();
-    const indexPath = path.join(__dirname, 'index.html');
-    let htmlContent = fs.readFileSync(indexPath, 'utf8');
-
-    // Ersetze die Skript-Pfade, um den Cache-Buster hinzuzufügen
-    htmlContent = htmlContent.replace(
-        /(src="\.\/(data|app)\.js)\??(v=\d+)?"/g,
-        `src="./$2.js?v=${version}"`
-    );
-
-    fs.writeFileSync(indexPath, htmlContent);
-    console.log(`Cache-Busting-Version ${version} zu index.html hinzugefügt.`);
-}
-
-
-/**
- * Liest alle Datenquellen und kombiniert sie in einer einzigen data.js.
+ * Liest alle Datenquellen und kombiniert sie in einer einzigen data.json.
  */
 function generateAllData() {
-    console.log('Starte Generierung der kombinierten Daten (data.js)...');
+    console.log('Starte Generierung der kombinierten Daten (data.json)...');
 
     const newsData = processMarkdownFiles(NEWS_DIR, newsProcessor);
     const appointmentsData = processMarkdownFiles(APPOINTMENTS_DIR, appointmentsProcessor);
@@ -173,15 +154,12 @@ function generateAllData() {
         contacts: contactsData
     };
 
-    // Erzeuge den finalen JavaScript-Code
-    const jsContent = `var DATA_STORE = ${JSON.stringify(combinedData, null, 2)};\n`;
+    // Erzeuge den finalen JSON-Code
+    const jsonContent = JSON.stringify(combinedData, null, 2);
 
-    fs.writeFileSync(OUTPUT_FILE, jsContent);
+    fs.writeFileSync(OUTPUT_FILE, jsonContent);
     console.log(`Erfolgreich kombinierte Daten in ${OUTPUT_FILE} geschrieben.`);
     console.log(`Daten: ${newsData.length} News, ${appointmentsData.length} Termine, ${contactsData.length} Kontakte.`);
-
-    // Füge den Cache-Buster hinzu, nachdem die Daten generiert wurden
-    addCacheBusting();
 }
 
 generateAllData();

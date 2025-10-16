@@ -1,26 +1,28 @@
-// KORREKTUR DES FEHLERS: Verwende 'var' oder stelle sicher, dass DATA_STORE existiert,
-// ohne 'const' zu verwenden, um den doppelten Variablenfehler zu vermeiden.
-var DATA_STORE = typeof DATA_STORE !== 'undefined' ? DATA_STORE : { news: [], appointments: [], contacts: [] };
-
 const appData = {
-    news: DATA_STORE.news || [],
-    appointments: DATA_STORE.appointments || [],
-    contacts: DATA_STORE.contacts || []
+    news: [],
+    appointments: [],
+    contacts: []
 };
 
 const newsList = document.getElementById('news-list');
 const appointmentsList = document.getElementById('appointments-list');
 const contactsList = document.getElementById('contacts-list');
-let currentTab = 'news'; // Startet mit Neuigkeiten
+let currentTab = 'news';
+let currentDataString = '';
 
-// --- Render Funktionen (Unverändert) ---
+// --- Render Funktionen ---
+
+function renderAll() {
+    renderNews();
+    renderAppointments();
+    renderContacts();
+}
 
 function renderNews() {
     if (appData.news.length === 0) {
         newsList.innerHTML = '<div class="bg-white text-center p-8 rounded-lg shadow-md"><p class="text-gray-500">Keine aktuellen Neuigkeiten vorhanden.</p></div>';
         return;
     }
-
     newsList.innerHTML = appData.news.map(item => `
         <article class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-300">
             <div class="flex items-start">
@@ -44,7 +46,6 @@ function renderAppointments() {
         appointmentsList.innerHTML = '<div class="bg-white text-center p-8 rounded-lg shadow-md"><p class="text-gray-500">Aktuell sind keine Termine geplant.</p></div>';
         return;
     }
-
     appointmentsList.innerHTML = appData.appointments.map(item => `
         <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 border-teal-500 flex items-center space-x-5 hover:shadow-md transition-shadow duration-300">
             <div class="flex-shrink-0 text-teal-500">
@@ -67,7 +68,6 @@ function renderContacts() {
         contactsList.innerHTML = '<div class="col-span-full bg-white text-center p-8 rounded-lg shadow-md"><p class="text-gray-500">Keine Kontakte hinterlegt.</p></div>';
         return;
     }
-
     contactsList.innerHTML = appData.contacts.map(item => `
         <div class="bg-white p-6 rounded-lg shadow-sm text-center hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1">
             <div class="mb-4">
@@ -82,93 +82,71 @@ function renderContacts() {
     `).join('');
 }
 
-// --- Tab Management (Funktioniert bereits) ---
+// --- Tab Management ---
 
 function showTab(tabName) {
     currentTab = tabName;
-
-    // Verstecke alle Inhalte
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.add('hidden');
-    });
-    // Zeige den ausgewählten Inhalt
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
     document.getElementById(`content-${tabName}`).classList.remove('hidden');
-
-    // Setze aktive Klasse für Buttons
     document.querySelectorAll('.tab-button').forEach(button => {
-        if (button.getAttribute('data-tab') === tabName) {
-            button.classList.add('active');
-        } else {
-            button.classList.remove('active');
-        }
+        button.classList.toggle('active', button.getAttribute('data-tab') === tabName);
     });
 }
 
-// --- Auto-Update Logik ---
+// --- Daten- und Update-Logik ---
 
-let currentDataString = JSON.stringify(DATA_STORE);
+async function loadData() {
+    try {
+        const response = await fetch(`./data.json?v=${new Date().getTime()}`);
+        const data = await response.json();
+        currentDataString = JSON.stringify(data);
 
-function checkForUpdates() {
-    // Erstelle ein neues Skript-Element, um die neuesten Daten zu laden
-    const script = document.createElement('script');
-    script.src = `./data.js?v=${new Date().getTime()}`; // Cache-Buster
+        appData.news = data.news || [];
+        appData.appointments = data.appointments || [];
+        appData.contacts = data.contacts || [];
 
-    script.onload = () => {
-        const newDataString = JSON.stringify(DATA_STORE);
+        renderAll();
+    } catch (error) {
+        console.error('Fehler beim initialen Laden der Daten:', error);
+    }
+}
+
+async function checkForUpdates() {
+    try {
+        const response = await fetch(`./data.json?v=${new Date().getTime()}`);
+        const newDataString = await response.text();
 
         if (newDataString !== currentDataString) {
             console.log('Änderungen erkannt. Aktualisiere die Ansicht...');
             currentDataString = newDataString;
+            const newData = JSON.parse(newDataString);
 
-            // Die globale DATA_STORE wurde durch das neue Skript aktualisiert.
-            // Weise die Daten neu zu und rendere die App neu.
-            appData.news = DATA_STORE.news || [];
-            appData.appointments = DATA_STORE.appointments || [];
-            appData.contacts = DATA_STORE.contacts || [];
+            appData.news = newData.news || [];
+            appData.appointments = newData.appointments || [];
+            appData.contacts = newData.contacts || [];
 
-            renderNews();
-            renderAppointments();
-            renderContacts();
-
+            renderAll();
             console.log('Ansicht erfolgreich aktualisiert.');
         }
-
-        // Entferne das Skript-Tag, nachdem es geladen wurde, um das DOM sauber zu halten
-        document.body.removeChild(script);
-    };
-
-    script.onerror = () => {
-        console.error('Fehler beim Laden der neuen Daten.');
-        document.body.removeChild(script);
-    };
-
-    document.body.appendChild(script);
+    } catch (error) {
+        console.error('Fehler beim Prüfen auf Aktualisierungen:', error);
+    }
 }
-
 
 // --- Initialisierung ---
 
-function initApp() {
-    // Führe alle Render-Funktionen aus
-    renderNews();
-    renderAppointments();
-    renderContacts();
-
-    // Setze Event-Listener für Tab-Buttons
+async function initApp() {
     document.querySelectorAll('.tab-button').forEach(button => {
         button.addEventListener('click', (e) => {
-            const tab = e.currentTarget.getAttribute('data-tab');
-            showTab(tab);
+            showTab(e.currentTarget.getAttribute('data-tab'));
         });
     });
 
-    // Zeige den initialen Tab
+    await loadData();
     showTab(currentTab);
 
-    // Starte die automatische Überprüfung auf Updates alle 60 Sekunden
-    setInterval(checkForUpdates, 60000);
-    console.log('Automatische Aktualisierung alle 60 Sekunden gestartet.');
+    setInterval(checkForUpdates, 5000); // Prüft alle 5 Sekunden auf Updates
+    console.log('Automatische Aktualisierung alle 5 Sekunden gestartet.');
 }
 
-// Starte die App, sobald das DOM geladen ist
 document.addEventListener('DOMContentLoaded', initApp);
