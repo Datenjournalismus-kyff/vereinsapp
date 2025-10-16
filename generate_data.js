@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { marked } = require('marked');
 
 // --- Konfiguration ---
 const NEWS_DIR = path.join(__dirname, 'news');
@@ -13,27 +14,6 @@ const OUTPUT_FILE = path.join(__dirname, 'data.js');
 
 
 // --- Hilfsfunktionen ---
-
-/**
- * Eine einfache, manuelle Konvertierung von Markdown zu HTML.
- * @param {string} markdownText - Der reine Markdown-Text.
- * @returns {string} - Der konvertierte HTML-Text.
- */
-function simpleMarkdownToHtml(markdownText) {
-    let html = markdownText.trim();
-
-    // Konvertiere **Text** zu <strong>Text</strong>
-    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-    // Konvertiere *Text* oder _Text_ zu <em>Text</em>
-    html = html.replace(/(\*|_)(.*?)\1/g, '<em>$2</em>');
-
-    // Ersetze doppelte Zeilenumbrüche (\n\n) durch </p><p> für Absätze
-    html = html.replace(/\n\n/g, '</p><p>');
-
-    // Umhülle den gesamten Inhalt mit dem ersten Absatz-Tag
-    return `<p>${html}</p>`;
-}
 
 /**
  * Liest und verarbeitet Markdown-Dateien aus einem bestimmten Verzeichnis.
@@ -92,7 +72,7 @@ function newsProcessor(file, content) {
         id: file,
         date: date,
         title: title,
-        contentHtml: simpleMarkdownToHtml(content)
+        contentHtml: marked(content)
     };
 }
 
