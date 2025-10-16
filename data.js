@@ -1,9 +1,9 @@
 var DATA_STORE = {
   "news": [
     {
-      "id": "20251007-webstorm-automatisierung.md",
-      "date": "07.10.2025",
-      "title": "Webstorm Automatisierung",
+      "id": "20251101-test.md",
+      "date": "01.11.2025",
+      "title": "Test",
       "contentHtml": "<p>Die Daten-Generierung funktioniert jetzt vollautomatisch!</p>\n<p>Änderungen in diesem Text werden nach jedem Commit auf GitHub automatisch in die App übernommen.</p>\n"
     }
   ],
