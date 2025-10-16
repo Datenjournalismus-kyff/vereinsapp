@@ -9,10 +9,10 @@ var DATA_STORE = {
   ],
   "appointments": [
     {
-      "id": "20251101-1900-Jaegerball.md",
+      "id": "20251101-1900-Jägerball.md",
       "date": "01.11.2025",
       "time": "19:00 Uhr",
-      "title": "Jaegerball",
+      "title": "Jägerball",
       "location": "Jägerball"
     }
   ],
