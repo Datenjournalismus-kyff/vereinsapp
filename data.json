@@ -1,12 +1,6 @@
 {
   "news": [
     {
-      "id": "20251101-test-funktion.md",
-      "date": "01.11.2025",
-      "title": "Test Funktion",
-      "contentHtml": "<p>Die Daten-Generierung funktioniert jetzt vollautomatisch!</p>\n<p>Änderungen in diesem Text werden nach jedem Commit auf GitHub automatisch in die App übernommen.</p>\n"
-    },
-    {
       "id": "20251016-LJV-Gefluegelpest.md",
       "date": "16.10.2025",
       "title": "LJV Gefluegelpest",
